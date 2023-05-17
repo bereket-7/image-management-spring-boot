@@ -27,6 +27,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sample.gallery.entity.ImageGallery;
 import com.sample.gallery.service.ImageGalleryService;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletResponse;
+
 @Controller
 public class ImageGalleryController {
 
@@ -93,6 +96,41 @@ public class ImageGalleryController {
 			log.info("Exception: " + e);
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+	}
+
+    @GetMapping("/image/display/{id}")
+	@ResponseBody
+	void showImage(@PathVariable("id") Long id, HttpServletResponse response, Optional<ImageGallery> imageGallery)
+			throws ServletException, IOException {
+		log.info("Id :: " + id);
+		imageGallery = imageGalleryService.getImageById(id);
+		response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+		response.getOutputStream().write(imageGallery.get().getImage());
+		response.getOutputStream().close();
+	}
+
+	@GetMapping("/image/imageDetails")
+	String showProductDetails(@RequestParam("id") Long id, Optional<ImageGallery> imageGallery, Model model) {
+		try {
+			log.info("Id :: " + id);
+			if (id != 0) {
+				imageGallery = imageGalleryService.getImageById(id);
+			
+				log.info("products :: " + imageGallery);
+				if (imageGallery.isPresent()) {
+					model.addAttribute("id", imageGallery.get().getId());
+					model.addAttribute("description", imageGallery.get().getDescription());
+					model.addAttribute("name", imageGallery.get().getName());
+					model.addAttribute("price", imageGallery.get().getPrice());
+					return "imagedetails";
+				}
+				return "redirect:/home";
+			}
+		return "redirect:/home";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/home";
+		}	
 	}
 
     @GetMapping("/image/show")
