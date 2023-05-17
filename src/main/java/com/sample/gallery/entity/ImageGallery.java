@@ -14,10 +14,11 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-@Table(name = "image_gallery")
+@Table(name="image_gallery")
 public class ImageGallery {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false, unique = true)
 	private Long id;
 	
@@ -27,7 +28,7 @@ public class ImageGallery {
 	@Column(name = "description", nullable = false)
 	private String description;	
 	
-	@Column(name = "price",nullable = false, precision = 10, scale = 2)
+	@Column(name = "price",nullable = false, precision = 10)
     private double price;
 	
 	@Lob
