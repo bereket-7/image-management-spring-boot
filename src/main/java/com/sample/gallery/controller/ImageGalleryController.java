@@ -28,6 +28,7 @@ import com.sample.gallery.entity.ImageGallery;
 import com.sample.gallery.service.ImageGalleryService;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
